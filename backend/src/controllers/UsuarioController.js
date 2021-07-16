@@ -5,21 +5,32 @@ const crypto = require('crypto');
 module.exports = {
 
     async index(request, response) {
-        const usuarios = await connection('usuarios').select('*');
+        try {
+            const usuarios = await connection('usuarios').select('*');
+            return response.status(200).json(usuarios);
+        } catch (erro) {
+            return response.status(400).send(erro);
+        }
+
     },
 
     async salvar(request, response) {
-        const { nome, idade, email, foto, escolaridade } = request.body;
+        try {
+            const { nome, idade, email, foto, escolaridade } = request.body;
 
-        const id = crypto.randomBytes(4).toString('HEX');
+            const id = crypto.randomBytes(4).toString('HEX');
 
-        await connection('usuarios').insert({
-            id,
-            nome,
-            idade,
-            email,
-            foto,
-            escolaridade
-        })
+            await connection('usuarios').insert({
+                id,
+                nome,
+                idade,
+                email,
+                foto,
+                escolaridade
+            });
+            return response.status(200).json("Usuario salvo com sucesso");
+        } catch (erro) {
+            return response.status(400).json("Erro ao salvar usuario");
+        }
     }
 }

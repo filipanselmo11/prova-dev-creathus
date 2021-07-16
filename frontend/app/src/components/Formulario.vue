@@ -140,7 +140,7 @@ export default {
             this.errors = {};
           })
           .catch((e) => {
-            this.erros = e.response.data.errors;
+            this.erros = e.response.errors;
           });
       }
     },
